@@ -85,6 +85,7 @@ export const getOptions = async (req, res) => {
     }, {});
     res.status(200).json(options);
   } catch (error) {
+    console.error("Error fetching options:", error);
     res.status(500).json({ error: error.message });
   }
 };

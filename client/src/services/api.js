@@ -1,4 +1,4 @@
-const API_BASE_URL = "/.netlify/functions/api";
+const API_BASE_URL = "/api";
 
 export const getAllCustomItems = async () => {
   const response = await fetch(`${API_BASE_URL}/custom-items`);
