@@ -10,7 +10,7 @@ const CreateCar = () => {
   const [wheels, setWheels] = useState("");
   const [interior, setInterior] = useState("");
   const [options, setOptions] = useState({});
-  const [totalPrice, setTotalPrice] = useState(0); // Initialized to 0
+  const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,9 +25,31 @@ const CreateCar = () => {
     try {
       const fetchedOptions = await getOptions();
 
-      console.log("Fetched options:", fetchedOptions); // Check the data format
+      // Filter out duplicates
+      const uniqueOptions = {
+        base_model: Array.from(
+          new Set(fetchedOptions.base_model.map((item) => item.name))
+        ).map((name) =>
+          fetchedOptions.base_model.find((item) => item.name === name)
+        ),
+        color: Array.from(
+          new Set(fetchedOptions.color.map((item) => item.name))
+        ).map((name) =>
+          fetchedOptions.color.find((item) => item.name === name)
+        ),
+        wheels: Array.from(
+          new Set(fetchedOptions.wheels.map((item) => item.name))
+        ).map((name) =>
+          fetchedOptions.wheels.find((item) => item.name === name)
+        ),
+        interior: Array.from(
+          new Set(fetchedOptions.interior.map((item) => item.name))
+        ).map((name) =>
+          fetchedOptions.interior.find((item) => item.name === name)
+        ),
+      };
 
-      setOptions(fetchedOptions); // Set the options directly if the backend returns the correct format
+      setOptions(uniqueOptions);
     } catch (error) {
       console.error("Error fetching options:", error);
     }
