@@ -10,7 +10,7 @@ const CreateCar = () => {
   const [wheels, setWheels] = useState("");
   const [interior, setInterior] = useState("");
   const [options, setOptions] = useState({});
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0); // Initialized to 0
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +24,10 @@ const CreateCar = () => {
   const fetchOptions = async () => {
     try {
       const fetchedOptions = await getOptions();
-      setOptions(fetchedOptions);
+
+      console.log("Fetched options:", fetchedOptions); // Check the data format
+
+      setOptions(fetchedOptions); // Set the options directly if the backend returns the correct format
     } catch (error) {
       console.error("Error fetching options:", error);
     }
@@ -32,24 +35,34 @@ const CreateCar = () => {
 
   const calculateTotalPrice = () => {
     let price = 0;
-    if (options.base_model) {
-      price +=
-        options.base_model.find((option) => option.name === baseModel)?.price ||
-        0;
+
+    if (options.base_model && baseModel) {
+      const baseModelOption = options.base_model.find(
+        (option) => option.name === baseModel
+      );
+      price += baseModelOption ? parseFloat(baseModelOption.price) || 0 : 0;
     }
-    if (options.color) {
-      price +=
-        options.color.find((option) => option.name === color)?.price || 0;
+
+    if (options.color && color) {
+      const colorOption = options.color.find((option) => option.name === color);
+      price += colorOption ? parseFloat(colorOption.price) || 0 : 0;
     }
-    if (options.wheels) {
-      price +=
-        options.wheels.find((option) => option.name === wheels)?.price || 0;
+
+    if (options.wheels && wheels) {
+      const wheelsOption = options.wheels.find(
+        (option) => option.name === wheels
+      );
+      price += wheelsOption ? parseFloat(wheelsOption.price) || 0 : 0;
     }
-    if (options.interior) {
-      price +=
-        options.interior.find((option) => option.name === interior)?.price || 0;
+
+    if (options.interior && interior) {
+      const interiorOption = options.interior.find(
+        (option) => option.name === interior
+      );
+      price += interiorOption ? parseFloat(interiorOption.price) || 0 : 0;
     }
-    setTotalPrice(price);
+
+    setTotalPrice(Number(price));
   };
 
   const handleSubmit = async (e) => {
@@ -142,7 +155,10 @@ const CreateCar = () => {
             ))}
           </select>
         </label>
-        <p>Total Price: ${totalPrice.toFixed(2)}</p>
+        <p>
+          Total Price: $
+          {isNaN(totalPrice) ? "N/A" : Number(totalPrice).toFixed(2)}
+        </p>
         <button type="submit">Create Custom Car</button>
       </form>
     </div>

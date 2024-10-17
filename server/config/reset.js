@@ -48,6 +48,32 @@ const seedOptions = `
     ON CONFLICT DO NOTHING
 `;
 
+const seedCustomItems = `
+    INSERT INTO custom_items (name, base_model, color, wheels, interior, price)
+    VALUES
+    ('Basic Sedan', 'Sedan', 'Red', 'Standard', 'Cloth', 26000),
+    ('Luxury SUV', 'SUV', 'Black', 'Premium', 'Leather', 39000),
+    ('Sports Car Deluxe', 'Sports Car', 'Blue', 'Sport', 'Premium Leather', 48000),
+    ('Economy Sedan', 'Sedan', 'White', 'Standard', 'Cloth', 25000),
+    ('Family SUV', 'SUV', 'White', 'Standard', 'Leather', 37000),
+    ('Convertible Sports', 'Sports Car', 'Red', 'Sport', 'Leather', 45500),
+    ('Executive Sedan', 'Sedan', 'Black', 'Premium', 'Premium Leather', 42000),
+    ('Adventure SUV', 'SUV', 'Blue', 'Sport', 'Cloth', 36000),
+    ('Roadster', 'Sports Car', 'Black', 'Premium', 'Premium Leather', 50000),
+    ('Compact SUV', 'SUV', 'Red', 'Standard', 'Cloth', 34000),
+    ('Urban Hatchback', 'Sedan', 'Blue', 'Sport', 'Cloth', 27000),
+    ('Off-Road SUV', 'SUV', 'Green', 'Premium', 'Leather', 40000),
+    ('Luxury Roadster', 'Sports Car', 'Silver', 'Sport', 'Premium Leather', 51000),
+    ('City Sedan', 'Sedan', 'Grey', 'Standard', 'Leather', 30000),
+    ('Explorer SUV', 'SUV', 'Yellow', 'Sport', 'Cloth', 35000),
+    ('Grand Tourer', 'Sports Car', 'White', 'Premium', 'Leather', 47000),
+    ('Sporty Coupe', 'Sedan', 'Blue', 'Sport', 'Leather', 32000),
+    ('Luxury SUV Premium', 'SUV', 'Black', 'Premium', 'Premium Leather', 55000),
+    ('Track Edition Sports', 'Sports Car', 'Red', 'Sport', 'Cloth', 46000),
+    ('Family Sedan', 'Sedan', 'White', 'Standard', 'Cloth', 28000)
+    ON CONFLICT DO NOTHING
+`;
+
 async function resetDatabase() {
   try {
     console.log("Connecting to database:", process.env.PGDATABASE);
@@ -57,6 +83,7 @@ async function resetDatabase() {
     await pool.query(createCustomItemsTable);
     await pool.query(createOptionsTable);
     await pool.query(seedOptions);
+    await pool.query(seedCustomItems);
     console.log("Database reset successful");
   } catch (error) {
     console.error("Error resetting database:", error);

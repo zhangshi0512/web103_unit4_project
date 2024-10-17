@@ -54,10 +54,16 @@ export const deleteCustomItem = async (id) => {
   return response.json();
 };
 
+// In the backend controller for getOptions
 export const getOptions = async () => {
-  const response = await fetch(`${API_BASE_URL}/options`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch options");
+  try {
+    const response = await fetch(`${API_BASE_URL}/options`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch options: ${response.statusText}`);
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching options:", error);
+    throw error; // Re-throw the error to be caught in the calling function
   }
-  return response.json();
 };

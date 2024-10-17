@@ -37,7 +37,7 @@ const ViewCars = () => {
             <h3>{car.name}</h3>
             <p>Base Model: {car.base_model}</p>
             <p>Color: {car.color}</p>
-            <p>Price: ${car.price.toFixed(2)}</p>
+            <p>Price: ${Number(car.price).toFixed(2)}</p>
             <Link to={`/customcars/${car.id}`}>View Details</Link>
             <Link to={`/edit/${car.id}`}>Edit</Link>
             <button onClick={() => handleDelete(car.id)}>Delete</button>

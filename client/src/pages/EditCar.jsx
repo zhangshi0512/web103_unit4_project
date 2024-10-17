@@ -16,7 +16,7 @@ const EditCar = () => {
   }, [id]);
 
   useEffect(() => {
-    if (car) {
+    if (car && Object.keys(options).length > 0) {
       calculateTotalPrice();
     }
   }, [car, options]);
@@ -33,31 +33,63 @@ const EditCar = () => {
   const fetchOptions = async () => {
     try {
       const fetchedOptions = await getOptions();
-      setOptions(fetchedOptions);
+      // Remove duplicates
+      const uniqueOptions = {
+        base_model: Array.from(
+          new Set(fetchedOptions.base_model.map((item) => item.name))
+        ).map((name) =>
+          fetchedOptions.base_model.find((item) => item.name === name)
+        ),
+        color: Array.from(
+          new Set(fetchedOptions.color.map((item) => item.name))
+        ).map((name) =>
+          fetchedOptions.color.find((item) => item.name === name)
+        ),
+        wheels: Array.from(
+          new Set(fetchedOptions.wheels.map((item) => item.name))
+        ).map((name) =>
+          fetchedOptions.wheels.find((item) => item.name === name)
+        ),
+        interior: Array.from(
+          new Set(fetchedOptions.interior.map((item) => item.name))
+        ).map((name) =>
+          fetchedOptions.interior.find((item) => item.name === name)
+        ),
+      };
+      setOptions(uniqueOptions);
     } catch (error) {
       console.error("Error fetching options:", error);
     }
   };
 
   const calculateTotalPrice = () => {
+    if (!car) return;
+
     let price = 0;
     if (options.base_model) {
       price +=
-        options.base_model.find((option) => option.name === car.base_model)
-          ?.price || 0;
+        parseFloat(
+          options.base_model.find((option) => option.name === car.base_model)
+            ?.price
+        ) || 0;
     }
     if (options.color) {
       price +=
-        options.color.find((option) => option.name === car.color)?.price || 0;
+        parseFloat(
+          options.color.find((option) => option.name === car.color)?.price
+        ) || 0;
     }
     if (options.wheels) {
       price +=
-        options.wheels.find((option) => option.name === car.wheels)?.price || 0;
+        parseFloat(
+          options.wheels.find((option) => option.name === car.wheels)?.price
+        ) || 0;
     }
     if (options.interior) {
       price +=
-        options.interior.find((option) => option.name === car.interior)
-          ?.price || 0;
+        parseFloat(
+          options.interior.find((option) => option.name === car.interior)?.price
+        ) || 0;
     }
     setTotalPrice(price);
   };
@@ -76,7 +108,7 @@ const EditCar = () => {
     }
   };
 
-  if (!car) {
+  if (!car || !options.base_model) {
     return <div>Loading...</div>;
   }
 
@@ -89,7 +121,7 @@ const EditCar = () => {
           <input
             type="text"
             name="name"
-            value={car.name}
+            value={car.name || ""}
             onChange={handleChange}
             required
           />
@@ -98,10 +130,11 @@ const EditCar = () => {
           Base Model:
           <select
             name="base_model"
-            value={car.base_model}
+            value={car.base_model || ""}
             onChange={handleChange}
             required
           >
+            <option value="">Select a base model</option>
             {options.base_model?.map((option) => (
               <option key={option.name} value={option.name}>
                 {option.name}
@@ -113,10 +146,11 @@ const EditCar = () => {
           Color:
           <select
             name="color"
-            value={car.color}
+            value={car.color || ""}
             onChange={handleChange}
             required
           >
+            <option value="">Select a color</option>
             {options.color?.map((option) => (
               <option key={option.name} value={option.name}>
                 {option.name}
@@ -128,10 +162,11 @@ const EditCar = () => {
           Wheels:
           <select
             name="wheels"
-            value={car.wheels}
+            value={car.wheels || ""}
             onChange={handleChange}
             required
           >
+            <option value="">Select wheels</option>
             {options.wheels?.map((option) => (
               <option key={option.name} value={option.name}>
                 {option.name}
@@ -143,10 +178,11 @@ const EditCar = () => {
           Interior:
           <select
             name="interior"
-            value={car.interior}
+            value={car.interior || ""}
             onChange={handleChange}
             required
           >
+            <option value="">Select interior</option>
             {options.interior?.map((option) => (
               <option key={option.name} value={option.name}>
                 {option.name}
@@ -154,7 +190,10 @@ const EditCar = () => {
             ))}
           </select>
         </label>
-        <p>Total Price: ${totalPrice.toFixed(2)}</p>
+        <p>
+          Total Price: $
+          {isNaN(totalPrice) ? "N/A" : Number(totalPrice).toFixed(2)}
+        </p>
         <button type="submit">Update Custom Car</button>
       </form>
     </div>

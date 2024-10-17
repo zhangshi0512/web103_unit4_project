@@ -1,8 +1,8 @@
-# WEB103 Project 4 - _DIY Delight_
+# WEB103 Project 4 - _BOLT BUCKET_
 
 Submitted by: **Shi Zhang**
 
-About this web app: **App description here**
+About this web app: **This is a full-stack web app that allows users to create and customize their own car. The app uses React to display data from an API and a PostgreSQL database to store user-created cars. The user can view a list of options they can select for different aspects of a car, and on selecting each option, the displayed visual icon for the car updates to match the option the user chose. The user can submit their choices to save the car to the list of created cars, and if a user submits a feature combo that is impossible, they should receive an appropriate error message and the item should not be saved to the database. The app displays the total price of all features, and users can view a list of all submitted cars, edit or delete a submitted car from the list view of submitted cars, and update or delete cars that have been created from the detail page.**
 
 Time spent: **5** hours
 

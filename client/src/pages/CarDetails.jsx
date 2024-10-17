@@ -32,7 +32,7 @@ const CarDetails = () => {
         <p>Color: {car.color}</p>
         <p>Wheels: {car.wheels}</p>
         <p>Interior: {car.interior}</p>
-        <p>Price: ${car.price.toFixed(2)}</p>
+        <p>Price: ${Number(car.price).toFixed(2)}</p>
       </div>
       <Link to={`/edit/${car.id}`}>Edit</Link>
       <Link to="/customcars">Back to Custom Cars</Link>
